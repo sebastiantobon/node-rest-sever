@@ -16,7 +16,7 @@ const usersGet = (req = request, res = response ) => {
 
   const usersPost =  (req = request, res = response) => {
 
-    const body = req = request.body;
+    const body = req.body;
 
     res.json({
       msg: "post API",
