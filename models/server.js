@@ -1,12 +1,16 @@
 const express = require("express");
-const res = require("express/lib/response");
 var cors = require("cors");
+
+const { dbConnection } = require("../database/config")
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
     this.endPointUsersPath = "/api/users";
+
+    // Conectar a base de datos
+    this.connectDB();
 
     // Middlewares
     this.middlewares();
@@ -15,11 +19,14 @@ class Server {
     this.routes();
   }
 
+  async connectDB() {
+    await dbConnection();
+  }
+
+
   middlewares() {
     //CORS
     this.app.use( cors() );
-
-
 
     // Lectura y Parseo del body
     this.app.use(express.json());
@@ -29,7 +36,6 @@ class Server {
   }
 
   routes() {
-  
     this.app.use(this.endPointUsersPath, require("../routes/user"))
   }
 

@@ -1,6 +1,7 @@
 const { request } = require("express");
 const { response } = require("express");
-
+const bcrypt = require('bcryptjs');
+const User = require("../models/user");
 
 
 const usersGet = (req = request, res = response ) => {
@@ -14,13 +15,28 @@ const usersGet = (req = request, res = response ) => {
   }
 
 
-  const usersPost =  (req = request, res = response) => {
+  const usersPost = async (req = request, res = response) => {
 
-    const body = req.body;
+    const {name, email, password, rol } = req.body;
+    const user = new User({name ,email, password, rol });
+
+    // Verificar si el correo existe
+
+    // hacer el hash del password (Encriptar)
+
+    // el sal es basicamente el numero de vueltas para hacer mas complicado para desencriptar 
+    // tiene por defecto un valor de 10 entre mas alto sea el numero mas complejo es el encriptado
+    const salt = bcrypt.genSaltSync(); 
+    // creando el hash del password
+    user.password = bcrypt.hashSync(password, salt)
+
+
+    // Guardar en DB
+    await user.save();
 
     res.json({
       msg: "post API",
-      body
+      user
     });
   }
 
