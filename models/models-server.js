@@ -36,7 +36,7 @@ class Server {
   }
 
   routes() {
-    this.app.use(this.endPointUsersPath, require("../routes/user"))
+    this.app.use(this.endPointUsersPath, require("../routes/userRoutes"))
   }
 
   listen() {

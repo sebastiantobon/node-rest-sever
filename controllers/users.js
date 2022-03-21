@@ -1,7 +1,7 @@
 const { request } = require("express");
 const { response } = require("express");
 const bcrypt = require('bcryptjs');
-const User = require("../models/user");
+const User = require("../models/models-user");
 
 
 const usersGet = (req = request, res = response ) => {
@@ -21,6 +21,12 @@ const usersGet = (req = request, res = response ) => {
     const user = new User({name ,email, password, rol });
 
     // Verificar si el correo existe
+    const existEmail= await User.findOne({email})
+    if(existEmail){
+      return res.status(400).json({
+        msg: "El correo ya esta registrado"
+      })
+    }
 
     // hacer el hash del password (Encriptar)
 
